@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import '../App.css';
+import {CartContext} from "../contexts/cart-context.jsx";
 
 const Product = ({ id, title, price, description, category, image }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const { addToCart, isInCart } = useContext(CartContext);
 
-    //... expansion
+    const handleAddToCart = () => {
+        addToCart({ id, title, price, description, category, image });
+    };
+
     const toggleDescription = () => {
         setIsExpanded(prev => !prev);
     };
@@ -25,6 +30,12 @@ const Product = ({ id, title, price, description, category, image }) => {
                         {isExpanded ? ' Show Less' : '... Show More'}
                     </span>
                 </p>
+                <button className="add-to-cart-button"
+                        onClick={handleAddToCart}
+                        disabled={isInCart(id)}
+                >
+                    {isInCart(id) ? 'Added to Cart' : 'Add to Cart'}
+                </button>
             </div>
         </div>
     );
