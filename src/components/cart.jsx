@@ -3,11 +3,16 @@ import '../App.css';
 import {CartContext} from "../contexts/cart-context.jsx";
 
 const Cart = () => {
-    const {cartItems, deleteFromCart, clearCart} = useContext(CartContext);
+    const {cartItems, deleteFromCart, clearCart, getTotal} = useContext(CartContext);
 
     const handleDelete = (id) => {
         deleteFromCart(id);
     }
+    // const handleCalculateTotal = (price) => {
+    //     calculateTotal(price);
+    // }
+    const total = getTotal();
+
     return (
         <div className="cart-page">
             <h1>Your Cart</h1>
@@ -25,10 +30,12 @@ const Cart = () => {
                                 <button onClick={() => handleDelete(item.id)}>Remove</button>
                             </div>
                         </div>
+
                     ))}
                     <button onClick={clearCart} className="clear-cart">Clear Cart</button>
                 </div>
             )}
+        <p>Total is: ${total}</p>
         </div>
     )
 

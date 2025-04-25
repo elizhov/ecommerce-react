@@ -6,6 +6,7 @@ const ACTIONS = {
     ADD_ITEM: "add-item",
     DELETE_ITEM: "delete-item",
     DELETE_ALL_ITEMS: "delete-all-items",
+    //CALCULATE_TOTAL: "calculate-total"  //nor es avelacrel
 }
 
 const reducer = (state, action) => {
@@ -22,12 +23,21 @@ const reducer = (state, action) => {
         case ACTIONS.DELETE_ALL_ITEMS:
             return [];
 
+        // case ACTIONS.CALCULATE_TOTAL:
+        //     return state.reduce((total, item) => total + item.price, 0);
+
         default: return state;
     }
 }
 
+
+
 const CartProvider = ({ children }) => {
     const [cartItems, dispatch] = useReducer(reducer, []);
+
+    const getTotal = () => {
+        return cartItems.reduce((total, item) => total + item.price, 0);
+    }
 
     const addToCart = (item) => {
         dispatch({type: ACTIONS.ADD_ITEM, payload: {value: item}});
@@ -41,8 +51,11 @@ const CartProvider = ({ children }) => {
     const isInCart = (id) => {
         return cartItems.some(item => item.id === id);
     }
+    // const calculateTotal = (price) => {
+    //     dispatch({type: ACTIONS.CALCULATE_TOTAL, payload: {value: {price}}})
+    // }
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, deleteFromCart, clearCart, isInCart }}>
+        <CartContext.Provider value={{ cartItems, addToCart, deleteFromCart, clearCart, isInCart, getTotal }}>
             {children}
         </CartContext.Provider>
     );
